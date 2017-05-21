@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MeetupToMarkdownConverter
+﻿namespace MeetupToMarkdownConverter
 {
+    using MeetupToMarkdownConverter.Models.Meetup;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+    using System;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Text;
+    using System.Threading.Tasks;
+
     class Program
     {
         static void Main(string[] args)
