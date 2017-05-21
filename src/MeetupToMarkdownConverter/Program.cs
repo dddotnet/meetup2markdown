@@ -28,9 +28,6 @@
 
                 
             }).Wait();
-
-
-            Console.ReadLine();
         }
 
         private static async Task<Event[]> getEventData(string apiKey)
