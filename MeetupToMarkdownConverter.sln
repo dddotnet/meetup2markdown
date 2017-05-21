@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetupToMarkdownConverter", "MeetupToMarkdownConverter\MeetupToMarkdownConverter.csproj", "{7A9DC376-5C7E-44BE-A3EF-5294CB984A63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetupToMarkdownConverter", "src\MeetupToMarkdownConverter\MeetupToMarkdownConverter.csproj", "{7A9DC376-5C7E-44BE-A3EF-5294CB984A63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
