@@ -1,0 +1,20 @@
+{
+    "settings": {
+        "indentation": {
+            "indentationSize": 4,
+            "tabSize": 4,
+            "useTabs": false
+        },
+        "orderingRules": {
+            "usingDirectivesPlacement": "insideNamespace"
+        },
+        "layoutRules": {
+            "newlineAtEndOfFile": "require"
+        },
+        "documentationRules": {
+            "documentExposedElements": false,
+            "documentInternalElements": false,
+            "documentInterfaces": false
+        }
+    }
+}

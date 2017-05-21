@@ -1,76 +1,80 @@
 ﻿namespace MeetupToMarkdownConverter
 {
-    using MeetupToMarkdownConverter.Models.Meetup;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
+    using Microsoft.Extensions.CommandLineUtils;
     using System;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.IO;
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine($"Parsing Meetup Api {DateTime.Now}");
-
-            Task.Run(async () =>
+            var app = new CommandLineApplication()
             {
-                //load data
-                var data = await Program.getEventData("add-api-key");
+                Name = "meetup2markdown",
+                Description = "Meetup To Markdown Converter"
+            };
 
-                //convert meetup format to markdown file
-                var mdEvents = data.Select(x => convertEventToMarkdown(x));
+            app.HelpOption("-? | -h | --help");
+            app.VersionOption(
+                "-v | --version",
+                " Version\t: 1.0.0"
+            );
 
-                //write result
-                mdEvents.ToList().ForEach(x => { Console.WriteLine(x.filename); Program.writeMarkdown(x.markdown); });
+            Console.WriteLine(app.Description);
 
-                
-            }).Wait();
-        }
+            // show help when no command is present
+            app.OnExecute(() =>
+            {
+                app.ShowVersion();
+                app.ShowHelp();
+                return -1;
+            });
 
-        private static async Task<Event[]> getEventData(string apiKey)
-        {
-            HttpClient client = new HttpClient();
+            app.Command("render", (command) =>
+            {
+                command.Description = "Render upcoming Meetups as Markdown.";
+                command.HelpOption("-? | -h | --help");
+                var argApiKey = command.Argument("apikey", "The API key for the Meetup API.", false);
+                var optionOutput = command.Option("-o | --output", "Name of the output folder", CommandOptionType.SingleValue);
 
-            var response = await client.GetAsync("https://api.meetup.com/NET-User-Group-Dresden/events?&sign=true&photo-host=public&page=20&key=" + apiKey);
+                command.OnExecute(() =>
+                {
+                    if (string.IsNullOrWhiteSpace(argApiKey.Value))
+                    {
+                        app.ShowHelp("render");
+                        return -1;
+                    }
 
-            var responseString = await response.Content.ReadAsStringAsync();
+                    var outputPath = Path.Combine(AppContext.BaseDirectory, "output" );
+                    if (optionOutput.HasValue())
+                    {
+                        outputPath = optionOutput.Value();
+                    }
+                    if (!Directory.Exists(outputPath))
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(outputPath);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine($"The output path is not valid: {outputPath}");
+                            return -1;
+                        }
+                    }
 
-            return JsonConvert.DeserializeObject<Event[]>(responseString,new JavaScriptDateTimeConverter());
-        }
+                    Commands.Render.Execute(
+                        argApiKey.Value,
+                        outputPath
+                    ).Wait();
 
-        private static void writeMarkdown(string markdown)
-        {
-            Console.WriteLine(markdown);
-        }
+                    return 0;
+                });
+            });
 
-        private static (string markdown, string filename) convertEventToMarkdown(Event meetup)
-        {
-            StringBuilder markdown = new StringBuilder();
+            var result = app.Execute(args);
 
-            var date = new DateTime((meetup.time * 10000) + 621355968000000000).ToLocalTime();
-
-            var filename = date.ToString("yyyy-MM-dd") + "-" +meetup.name.ToLower().Trim().Replace(" ", "-") +".markdown";
-
-            var placelink = $"https://maps.google.com?q={meetup.venue.lat},{meetup.venue.lon}";
-
-            var dateString = date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-
-            markdown.AppendLine("---");
-            markdown.AppendLine("layout: postnew");
-            markdown.AppendLine($"title: \"{meetup.name}\"");
-            markdown.AppendLine("categories: treffen");
-            markdown.AppendLine($"date: {dateString}");
-            markdown.AppendLine("speaker: \"siehe Meetup\"");
-            markdown.AppendLine($"place:{meetup.venue.name}");
-            markdown.AppendLine($"placelink:{placelink}");
-            markdown.AppendLine("---");
-            
-            markdown.AppendLine(meetup.description);
-
-            return (markdown: markdown.ToString(), filename: filename);
+            Environment.Exit(result);
         }
     }
 }
