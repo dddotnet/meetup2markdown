@@ -15,7 +15,8 @@
 
             var filename = date.ToString("yyyy-MM-dd") + "-" + meetup.Name.ToLower().Trim().Replace(" ", "-") + ".markdown";
 
-            var placelink = $"https://maps.google.com?q={meetup.Venue.Lat},{meetup.Venue.Lon}";
+            var placeQuery = System.Net.WebUtility.UrlEncode($"{meetup.Venue.Address_1}, {meetup.Venue.City}, {meetup.Venue.Country}");
+            var placelink = $"https://maps.google.com/maps?f=q&hl=en&q={placeQuery}";
 
             var dateString = date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
 
@@ -25,11 +26,19 @@
             markdown.AppendLine("categories: treffen");
             markdown.AppendLine($"date: {dateString}");
             markdown.AppendLine("speaker: \"siehe Meetup\"");
-            markdown.AppendLine($"place:{meetup.Venue.Name}");
-            markdown.AppendLine($"placelink:{placelink}");
+            markdown.AppendLine($"place: {meetup.Venue.Name}");
+            markdown.AppendLine($"placelink: {placelink}");
             markdown.AppendLine("---");
 
+            markdown.AppendLine(string.Empty);
+            markdown.AppendLine($"## {meetup.Name}");
+
             markdown.AppendLine(meetup.Description);
+
+            markdown.AppendLine(string.Empty);
+            markdown.AppendLine("## Ort und Zeit");
+            markdown.AppendLine($"Wir treffen uns am {date.ToString("dd. MMMM yyyy")} um {date.ToString("HH:mm")} Uhr bei [{meetup.Venue.Name}]({placelink}).  ");
+            markdown.AppendLine($"Die Gästeliste wird auf [Meetup]({meetup.Link}) verwaltet.");
 
             return (markdown: markdown.ToString(), filename: filename);
         }
