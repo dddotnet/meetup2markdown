@@ -107,22 +107,16 @@
                     {
                         outputPath = optionOutput.Value();
                     }
-                    if (!Directory.Exists(outputPath))
+                    if (Directory.Exists(outputPath))
                     {
-                        try
-                        {
-                            Directory.CreateDirectory(outputPath);
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine($"The output path is not valid: {outputPath}");
-                            return -1;
-                        }
-                    }
-
-                    Commands.Cleanup.Execute(
+                        Commands.Cleanup.Execute(
                         outputPath
-                    ).Wait();
+                        ).Wait();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Directory not found, nothing to clean.");
+                    }
 
                     return 0;
                 });
