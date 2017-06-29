@@ -8,11 +8,11 @@
 
     internal class API
     {
-        internal static async Task<Event[]> GetEventData(string apiKey)
+        internal static async Task<Event[]> GetEventData(Settings settings)
         {
             HttpClient client = new HttpClient();
 
-            var response = await client.GetAsync("https://api.meetup.com/NET-User-Group-Dresden/events?&sign=true&photo-host=public&page=20&key=" + apiKey);
+            var response = await client.GetAsync($"{settings.Api}{settings.Group}/events?&sign=true&photo-host=public&page=20&key={settings.Key}");
 
             var responseString = await response.Content.ReadAsStringAsync();
 

@@ -1,5 +1,6 @@
 ﻿namespace MeetupToMarkdownConverter.Commands
 {
+    using MeetupToMarkdownConverter.Meetup.Models;
     using System;
     using System.IO;
     using System.Linq;
@@ -7,10 +8,10 @@
 
     internal class Render
     {
-        internal static async Task Execute(string apikey, string outputPath)
+        internal static async Task Execute(Settings settings, string outputPath)
         {
             // load data
-            var data = await Meetup.API.GetEventData(apikey);
+            var data = await Meetup.API.GetEventData(settings);
 
             // write result
             data.Select(x => Meetup.Helper.ConvertEventToMarkdown(x)).ToList().ForEach(
