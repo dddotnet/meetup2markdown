@@ -94,6 +94,40 @@
                 });
             });
 
+            app.Command("cleanup", (command) =>
+            {
+                command.Description = "Cleanup the output.";
+                command.HelpOption("-? | -h | --help");
+                var optionOutput = command.Option("-o | --output", "Name of the output folder", CommandOptionType.SingleValue);
+
+                command.OnExecute(() =>
+                {
+                    var outputPath = Path.Combine(AppContext.BaseDirectory, "output");
+                    if (optionOutput.HasValue())
+                    {
+                        outputPath = optionOutput.Value();
+                    }
+                    if (!Directory.Exists(outputPath))
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(outputPath);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine($"The output path is not valid: {outputPath}");
+                            return -1;
+                        }
+                    }
+
+                    Commands.Cleanup.Execute(
+                        outputPath
+                    ).Wait();
+
+                    return 0;
+                });
+            });
+
             var result = app.Execute(args);
 
             Environment.Exit(result);

@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    internal class Render
+    internal static class Render
     {
         internal static async Task Execute(Settings settings, string outputPath)
         {
