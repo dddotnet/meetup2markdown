@@ -9,7 +9,8 @@
         internal static async Task Execute(string outputPath)
         {
             await Task.Factory.StartNew(
-                path => {
+                path =>
+                {
                     Console.WriteLine($"Deleting directory {path}...");
                     Directory.Delete((string)path, true);
                     Console.WriteLine("    Done.");
