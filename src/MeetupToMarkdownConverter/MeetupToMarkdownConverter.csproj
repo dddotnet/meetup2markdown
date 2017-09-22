@@ -2,7 +2,9 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp1.1</TargetFramework>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
+        <RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+        <OutputType>Exe</OutputType>
         <AssemblyName>meetup2markdown</AssemblyName>
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <CodeAnalysisRuleSet>..\..\StyleCop.ruleset</CodeAnalysisRuleSet>
@@ -10,10 +12,10 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-        <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+        <PackageReference Include="System.ValueTuple" Version="4.4.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>
