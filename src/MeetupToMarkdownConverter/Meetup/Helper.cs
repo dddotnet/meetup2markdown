@@ -11,7 +11,8 @@
         {
             StringBuilder markdown = new StringBuilder();
 
-            var date = new DateTime((meetup.Time * 10000) + 621355968000000000).ToLocalTime();
+            var germanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+            var date = TimeZoneInfo.ConvertTimeFromUtc(new DateTime((meetup.Time * 10000) + 621355968000000000),germanTimeZone);
 
             var filename = date.ToString("yyyy-MM-dd") + "-" + meetup.Name.ToLower().Trim().Replace(" ", "-") + ".markdown";
 
