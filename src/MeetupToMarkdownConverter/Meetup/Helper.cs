@@ -21,7 +21,7 @@ namespace MeetupToMarkdownConverter.Meetup
             var germanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
             
             var date = FromUnixTime(meetup.time).ToLocalTime();
-            date = TimeZoneInfo.ConvertTimeFromUtc(date, germanTimeZone);
+            var localDate = TimeZoneInfo.ConvertTimeFromUtc(date, germanTimeZone);
 
             var filename = date.ToString("yyyy-MM-dd") + "-" + meetup.Name.ToLower().Trim().Replace(" ", "-") + ".markdown";
 
@@ -47,7 +47,7 @@ namespace MeetupToMarkdownConverter.Meetup
 
             markdown.AppendLine(string.Empty);
             markdown.AppendLine("## Ort und Zeit");
-            markdown.AppendLine($"Wir treffen uns am {date.ToString("dd. MMMM yyyy")} um {date.ToString("HH:mm")} Uhr bei [{meetup.Venue.Name}]({placelink}).  ");
+            markdown.AppendLine($"Wir treffen uns am {localDate.ToString("dd. MMMM yyyy")} um {localDate.ToString("HH:mm")} Uhr bei [{meetup.Venue.Name}]({placelink}).  ");
             markdown.AppendLine($"Die Gästeliste wird auf [Meetup]({meetup.Link}) verwaltet.");
 
             return (markdown: markdown.ToString(), filename: filename);
