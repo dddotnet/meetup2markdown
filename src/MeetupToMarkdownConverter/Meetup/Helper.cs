@@ -7,9 +7,9 @@ namespace MeetupToMarkdownConverter.Meetup
     {
         public static DateTime FromUnixTime(long unixTime)
         {
-            return epoch.AddSeconds(unixTime);
+            return Epoch.AddSeconds(unixTime);
         }
-        private static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 
 #pragma warning disable SA1008 // StyleCop does not knor Tuples
@@ -20,7 +20,7 @@ namespace MeetupToMarkdownConverter.Meetup
 
             var germanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
             
-            var date = FromUnixTime(meetup.time).ToLocalTime();
+            var date = FromUnixTime(meetup.Time).ToLocalTime();
             var localDate = TimeZoneInfo.ConvertTimeFromUtc(date, germanTimeZone);
 
             var filename = date.ToString("yyyy-MM-dd") + "-" + meetup.Name.ToLower().Trim().Replace(" ", "-") + ".markdown";
