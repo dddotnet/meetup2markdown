@@ -46,25 +46,18 @@
             {
                 command.Description = "Render upcoming Meetups as Markdown.";
                 command.HelpOption("-? | -h | --help");
-                var argApiKey = command.Argument("apikey", "The API key for the Meetup API.", false);
                 var argGroup = command.Argument("group", "The Group ID for the Meetup API.", false);
                 var optionOutput = command.Option("-o | --output", "Name of the output folder", CommandOptionType.SingleValue);
 
                 command.OnExecute(() =>
                 {
-                    if (string.IsNullOrWhiteSpace(argApiKey.Value))
-                    {
-                        app.ShowHelp("render");
-                        return -1;
-                    }
-
                     if (string.IsNullOrWhiteSpace(argGroup.Value))
                     {
                         app.ShowHelp("render");
                         return -1;
                     }
 
-                    var outputPath = Path.Combine(AppContext.BaseDirectory, "output" );
+                    var outputPath = Path.Combine(AppContext.BaseDirectory, "output");
                     if (optionOutput.HasValue())
                     {
                         outputPath = optionOutput.Value();
@@ -81,8 +74,6 @@
                             return -1;
                         }
                     }
-
-                    meetupSettings.Key = argApiKey.Value;
                     meetupSettings.Group = argGroup.Value;
 
                     Commands.Render.Execute(

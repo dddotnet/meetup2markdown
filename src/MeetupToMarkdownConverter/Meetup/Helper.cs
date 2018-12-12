@@ -7,7 +7,7 @@ namespace MeetupToMarkdownConverter.Meetup
     {
         public static DateTime FromUnixTime(long unixTime)
         {
-            return Epoch.AddSeconds(unixTime);
+            return Epoch.AddMilliseconds(unixTime);
         }
         private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -19,8 +19,8 @@ namespace MeetupToMarkdownConverter.Meetup
             StringBuilder markdown = new StringBuilder();
 
             var germanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
-            
-            var date = FromUnixTime(meetup.Time).ToLocalTime();
+
+            var date = FromUnixTime(meetup.Time).ToUniversalTime();
             var localDate = TimeZoneInfo.ConvertTimeFromUtc(date, germanTimeZone);
 
             var filename = date.ToString("yyyy-MM-dd") + "-" + meetup.Name.ToLower().Trim().Replace(" ", "-") + ".markdown";
