@@ -12,7 +12,7 @@
         {
             HttpClient client = new HttpClient();
 
-            var response = await client.GetAsync($"{settings.Api}{settings.Group}/events?&sign=true&photo-host=public&page=20&key={settings.Key}");
+            var response = await client.GetAsync($"{settings.Api}{settings.Group}/events?&sign=true&photo-host=public&page=20");
 
             var responseString = await response.Content.ReadAsStringAsync();
 

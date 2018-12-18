@@ -5,14 +5,23 @@ namespace MeetupToMarkdownConverter.Meetup
     using System.Text;
     internal class Helper
     {
-        #pragma warning disable SA1008 // StyleCop does not knor Tuples
+        public static DateTime FromUnixTime(long unixTime)
+        {
+            return Epoch.AddMilliseconds(unixTime);
+        }
+        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+
+#pragma warning disable SA1008 // StyleCop does not knor Tuples
         internal static (string markdown, string filename) ConvertEventToMarkdown(Event meetup)
-        #pragma warning restore SA1008 // StyleCop does not knor Tuples
+#pragma warning restore SA1008 // StyleCop does not knor Tuples
         {
             StringBuilder markdown = new StringBuilder();
 
             var germanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
-            var date = TimeZoneInfo.ConvertTimeFromUtc(new DateTime((meetup.Time * 10000) + 621355968000000000), germanTimeZone);
+
+            var date = FromUnixTime(meetup.Time).ToUniversalTime();
+            var localDate = TimeZoneInfo.ConvertTimeFromUtc(date, germanTimeZone);
 
             var filename = date.ToString("yyyy-MM-dd") + "-" + meetup.Name.ToLower().Trim().Replace(" ", "-") + ".markdown";
 
@@ -38,7 +47,7 @@ namespace MeetupToMarkdownConverter.Meetup
 
             markdown.AppendLine(string.Empty);
             markdown.AppendLine("## Ort und Zeit");
-            markdown.AppendLine($"Wir treffen uns am {date.ToString("dd. MMMM yyyy")} um {date.ToString("HH:mm")} Uhr bei [{meetup.Venue.Name}]({placelink}).  ");
+            markdown.AppendLine($"Wir treffen uns am {localDate.ToString("dd. MMMM yyyy")} um {localDate.ToString("HH:mm")} Uhr bei [{meetup.Venue.Name}]({placelink}).  ");
             markdown.AppendLine($"Die Gästeliste wird auf [Meetup]({meetup.Link}) verwaltet.");
 
             return (markdown: markdown.ToString(), filename: filename);
