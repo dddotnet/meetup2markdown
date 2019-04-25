@@ -1,6 +1,6 @@
-namespace MeetupToMarkdownConverter.Meetup
+﻿namespace MeetupToMarkdownConverter.Meetup
 {
-    using Models;
+    using MeetupToMarkdownConverter.Meetup.Models;
     using System;
     using System.Text;
     internal class Helper
@@ -9,12 +9,10 @@ namespace MeetupToMarkdownConverter.Meetup
         {
             return Epoch.AddMilliseconds(unixTime);
         }
+
         private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-
-#pragma warning disable SA1008 // StyleCop does not knor Tuples
         internal static (string markdown, string filename) ConvertEventToMarkdown(Event meetup)
-#pragma warning restore SA1008 // StyleCop does not knor Tuples
         {
             StringBuilder markdown = new StringBuilder();
 

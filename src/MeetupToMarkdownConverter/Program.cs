@@ -58,10 +58,12 @@
                     }
 
                     var outputPath = Path.Combine(AppContext.BaseDirectory, "output");
+
                     if (optionOutput.HasValue())
                     {
                         outputPath = optionOutput.Value();
                     }
+
                     if (!Directory.Exists(outputPath))
                     {
                         try
@@ -74,6 +76,7 @@
                             return -1;
                         }
                     }
+
                     meetupSettings.Group = argGroup.Value;
 
                     Commands.Render.Execute(
@@ -94,10 +97,12 @@
                 command.OnExecute(() =>
                 {
                     var outputPath = Path.Combine(AppContext.BaseDirectory, "output");
+
                     if (optionOutput.HasValue())
                     {
                         outputPath = optionOutput.Value();
                     }
+
                     if (Directory.Exists(outputPath))
                     {
                         Commands.Cleanup.Execute(

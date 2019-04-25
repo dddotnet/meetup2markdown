@@ -1,6 +1,6 @@
 ﻿namespace MeetupToMarkdownConverter.Meetup
 {
-    using Models;
+    using MeetupToMarkdownConverter.Meetup.Models;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using System.Net.Http;
