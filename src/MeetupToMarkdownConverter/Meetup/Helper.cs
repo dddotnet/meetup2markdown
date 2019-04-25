@@ -21,7 +21,7 @@
             var date = FromUnixTime(meetup.Time).ToUniversalTime();
             var localDate = TimeZoneInfo.ConvertTimeFromUtc(date, germanTimeZone);
 
-            var filename = date.ToString("yyyy-MM-dd") + "-" + meetup.Name.ToLower().Trim().Replace(" ", "-") + ".markdown";
+            var filename = date.ToString("yyyy-MM-dd") + "-" + MakeValidFileName(meetup.Name) + ".markdown";
 
             var placeQuery = System.Net.WebUtility.UrlEncode($"{meetup.Venue.Address_1}, {meetup.Venue.City}, {meetup.Venue.Country}");
             var placelink = $"https://maps.google.com/maps?f=q&hl=en&q={placeQuery}";
@@ -49,6 +49,14 @@
             markdown.AppendLine($"Die Gästeliste wird auf [Meetup]({meetup.Link}) verwaltet.");
 
             return (markdown: markdown.ToString(), filename: filename);
+        }
+
+        private static string MakeValidFileName(string name)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "-").ToLower().Trim().Replace(" ", "-");
         }
     }
 }
